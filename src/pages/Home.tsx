@@ -44,8 +44,10 @@ export default function Home() {
   useEffect(() => {
     const on = () => setOnline(true);
     const off = () => setOnline(false);
+
     window.addEventListener("online", on);
     window.addEventListener("offline", off);
+
     return () => {
       window.removeEventListener("online", on);
       window.removeEventListener("offline", off);
@@ -54,10 +56,17 @@ export default function Home() {
 
   function addNote() {
     if (!title.trim() || !body.trim()) return;
+
     setNotes([
-      { id: Date.now(), title: title.trim(), body: body.trim(), updated: "Just now" },
+      {
+        id: Date.now(),
+        title: title.trim(),
+        body: body.trim(),
+        updated: "Just now",
+      },
       ...notes,
     ]);
+
     setTitle("");
     setBody("");
   }
@@ -65,20 +74,19 @@ export default function Home() {
   return (
     <div className="shell">
       <header>
-        <p>Offline Notes Lab</p>
+        <strong>Offline Notes Lab</strong>
         <span>{online ? "Online" : "Offline"}</span>
       </header>
 
       <aside>
-        <p className="eyebrow">Workshop Map</p>
+        <p>WORKSHOP MAP</p>
         {steps.map((step, index) => (
           <button
             key={index}
-            type="button"
             onClick={() =>
               setDone(
                 done.includes(index)
-                  ? done.filter((x) => x !== index)
+                  ? done.filter((current) => current !== index)
                   : [...done, index]
               )
             }
@@ -91,24 +99,21 @@ export default function Home() {
       </aside>
 
       <main>
-        <p className="eyebrow">Foundation Track</p>
-        <h1>Beckley David Oladipupo <br />2024/1/96322EE<br />
-        Electrical Engineering
-        </h1>
-        
+        <p className="eyebrow">FOUNDATION TRACK</p>
+        <h1>Keep learning when the network leaves.</h1>
         <p className="lede">
-          Save a note, refresh the page, then test the same experience with
-          the network turned off.
+          Save a note, refresh the page, then test the same experience with the
+          network turned off.
         </p>
 
-        <div className="columns">
+        <section className="columns">
           <div>
-            <h3>Notes from the lab</h3>
+            <h2>Notes from the lab</h2>
             {notes.map((note) => (
               <article key={note.id}>
-                <h4>{note.title}</h4>
+                <h3>{note.title}</h3>
                 <p>{note.body}</p>
-                <span>{note.updated}</span>
+                <small>{note.updated}</small>
               </article>
             ))}
           </div>
@@ -119,7 +124,8 @@ export default function Home() {
               addNote();
             }}
           >
-            <h3>Write a note</h3>
+            <h2>Write a note</h2>
+
             <label>
               Title
               <input
@@ -127,6 +133,7 @@ export default function Home() {
                 onChange={(event) => setTitle(event.target.value)}
               />
             </label>
+
             <label>
               Observation
               <textarea
@@ -135,9 +142,10 @@ export default function Home() {
                 rows={5}
               />
             </label>
+
             <button type="submit">Save locally</button>
           </form>
-        </div>
+        </section>
       </main>
     </div>
   );
